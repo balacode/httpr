@@ -52,7 +52,8 @@ fn connect(mut stream: TcpStream) {
 
 // _ _
 const DOC_NOT_FOUND: &str =
-"<!DOCTYPE html PUBLIC '-//w3c//dtd xhtml 1.0 transitional//en' \
+"HTTP/1.1 200 OK\r\n\r\n
+<!DOCTYPE html PUBLIC '-//w3c//dtd xhtml 1.0 transitional//en' \
 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> \
 <html xmlns='http://www.w3.org/1999/xhtml'> \
 <head><title>E404</title></head> \
