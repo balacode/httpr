@@ -10,7 +10,7 @@ use std::thread;
 use std::net::{TcpListener, TcpStream, Shutdown};
 use std::io::{Read, Write};
 
-// _ _
+// main entry point of the application
 fn main() {
     println!("Server listening on port 900");
     let listener = TcpListener::bind("0.0.0.0:900").unwrap();
@@ -20,15 +20,15 @@ fn main() {
                 println!("Accept connection: {}", stream.peer_addr().unwrap());
                 thread::spawn(move || { connect(stream) });
             }
-            Err(e) => {
-                println!("Connection failed with error: {}", e);
+            Err(er) => {
+                println!("Connection failed with error: {}", er);
             }
         }
     }
     drop(listener)
 } //                                                                        main
 
-// _ _
+// spawned in a thread to serve incoming connections
 fn connect(mut stream: TcpStream) {
     println!("\n>>>>>>> thread for {}", stream.peer_addr().unwrap());
     let mut data = [0 as u8; 64 * 1024]; // using 64KB byte buffer
@@ -37,8 +37,8 @@ fn connect(mut stream: TcpStream) {
             let request = String::from_utf8_lossy(&data[0..size]);
             println!("\n>>>>>>> {} {} bytes:\n{}",
                 stream.peer_addr().unwrap(), size, request);
-            let ar = DOC_NOT_FOUND.as_bytes();
-            stream.write(ar).unwrap();
+            let response = DOC_NOT_FOUND.as_bytes();
+            stream.write(response).unwrap();
             stream.flush().unwrap();
             /*false*/ // result
         },
@@ -51,7 +51,8 @@ fn connect(mut stream: TcpStream) {
     } /*{}*/
 } //                                                                     connect
 
-// _ _
+// 404 message displayed by the server when a file is not found
+// (includes the HTTP header for now)
 const DOC_NOT_FOUND: &str =
 "HTTP/1.1 200 OK\r\n\r\n
 <!DOCTYPE html PUBLIC '-//w3c//dtd xhtml 1.0 transitional//en' \
