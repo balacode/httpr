@@ -34,14 +34,9 @@ fn connect(mut stream: TcpStream) {
     let mut data = [0 as u8; 64 * 1024]; // using 64KB byte buffer
     while match stream.read(&mut data) {
         Ok(size) => {
-            // convert data to a string
-            let s: &str;
-            match std::str::from_utf8(&data[0..size]) {
-                Ok(v) => { s = v; }
-                Err(_) => { s = "ERROR"; }
-            }
+            let request = String::from_utf8_lossy(&data[0..size]);
             println!("\n>>>>>>> {} {} bytes:\n{}",
-                stream.peer_addr().unwrap(), size, s);
+                stream.peer_addr().unwrap(), size, request);
             let ar = DOC_NOT_FOUND.as_bytes();
             stream.write(ar).unwrap();
             size > 0 // result
