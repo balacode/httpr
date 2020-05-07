@@ -32,22 +32,23 @@ fn main() {
 fn connect(mut stream: TcpStream) {
     println!("\n>>>>>>> thread for {}", stream.peer_addr().unwrap());
     let mut data = [0 as u8; 64 * 1024]; // using 64KB byte buffer
-    while match stream.read(&mut data) {
+    /*while*/ match stream.read(&mut data) {
         Ok(size) => {
             let request = String::from_utf8_lossy(&data[0..size]);
             println!("\n>>>>>>> {} {} bytes:\n{}",
                 stream.peer_addr().unwrap(), size, request);
             let ar = DOC_NOT_FOUND.as_bytes();
             stream.write(ar).unwrap();
-            size > 0 // result
+            stream.flush().unwrap();
+            /*false*/ // result
         },
         Err(_) => {
             println!("\n>>>>>>> {} error reading",
                 stream.peer_addr().unwrap());
             stream.shutdown(Shutdown::Both).unwrap();
-            false // result
+            /*false*/ // result
         }
-    } {}
+    } /*{}*/
 } //                                                                     connect
 
 // _ _
