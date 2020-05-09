@@ -37,7 +37,9 @@ fn connect(mut stream: TcpStream) {
             let request = String::from_utf8_lossy(&data[0..size]);
             println!("\n>>>>>>> {} {} bytes:\n{}",
                 stream.peer_addr().unwrap(), size, request);
+            let header = "HTTP/1.1 200 OK\r\n\r\n".as_bytes();
             let response = DOC_NOT_FOUND.as_bytes();
+            stream.write(header).unwrap();
             stream.write(response).unwrap();
             stream.flush().unwrap();
             /*false*/ // result
@@ -54,8 +56,7 @@ fn connect(mut stream: TcpStream) {
 // 404 message displayed by the server when a file is not found
 // (includes the HTTP header for now)
 const DOC_NOT_FOUND: &str =
-"HTTP/1.1 200 OK\r\n\r\n
-<!DOCTYPE html PUBLIC '-//w3c//dtd xhtml 1.0 transitional//en' \
+"<!DOCTYPE html PUBLIC '-//w3c//dtd xhtml 1.0 transitional//en' \
 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> \
 <html xmlns='http://www.w3.org/1999/xhtml'> \
 <head><title>E404</title></head> \
