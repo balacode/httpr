@@ -56,21 +56,46 @@ fn connect(mut stream: TcpStream) {
 // 404 message displayed by the server when a file is not found
 // (includes the HTTP header for now)
 const DOC_NOT_FOUND: &str =
-"<!DOCTYPE html PUBLIC '-//w3c//dtd xhtml 1.0 transitional//en' \
-'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> \
-<html xmlns='http://www.w3.org/1999/xhtml'> \
-<head><title>E404</title></head> \
-<body bgcolor='#ffffff'> \
-<div style='position: absolute; left: 55px; width: 350px; \
- top: 55px; height: 85px; background-color: #FF3300; \
- font-family: Arial, Helvetica, sans-serif; \
- font-size: xx-large; font-weight: bolder; \
- color: #FFFFFF;' align='center'> \
-404: That page was not found! *</div> \
-<div style='position: absolute; left: 55px; width: 350px; \
- top: 150px; font-family: Arial, Helvetica, sans-serif; \
- font-weight: bolder; color: #FF3300;' align='center'> \
-* However the server is responding.</div> \
-</body></html>";
+"<!DOCTYPE html> \
+<html lang='en'> \
+    <head> \
+        <meta charset='utf-8'> \
+        <title>E404</title> \
+        <style> \
+        div.main { \
+            align-items: center; \
+            display: flex; \
+            height: 90vh; \
+            justify-content: center; \
+            width: 100%; \
+        } \
+        div.box { \
+            background-color: #FF3300; /*orange*/ \
+            border-radius: 0.5rem; \
+            height: 5rem; \
+            padding-top: 1rem; \
+            width: 24rem; \
+        } \
+        .big { \
+            font-size: xx-large; \
+        } \
+        p { \
+            color: white; \
+            font-family: sans-serif; \
+            font-weight: bolder; \
+            margin: 0; \
+            text-align: center; \
+        } \
+        </style> \
+    </head> \
+    <body> \
+        <div class='main'> \
+            <div class='box'> \
+                <p class='big'>404: Page not found! *</p> \
+                <p>* However the server is responding.</p> \
+            </div> \
+        </div> \
+    </body> \
+</html>";
 
 // end
